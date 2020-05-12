@@ -2,6 +2,8 @@ import xml.etree.ElementTree as ET
 import os
 
 import mysql.connector
+import unicodedata
+
 
 config = {
   'user': '',
@@ -77,25 +79,36 @@ class Parser():
         print(self.rank)
         print(self.counter)
 
+    def remove_accents(self, input_str):
+        nfkd_form = unicodedata.normalize('NFKD', input_str)
+        only_ascii = nfkd_form.encode('ASCII', 'ignore')
+        return only_ascii.decode()
+
     def insert_into_table(self):
         mycursor = cnx.cursor()
-        desinger = ''
+
+        # Clear all table content before inserting
+        sql_delete = "delete from board_game where board_game_id > 0"
+        mycursor.execute(sql_delete)
+        cnx.commit()
+
+        designer = ''
         publisher = ''
         mechanic = ''
         category = ''
 
         if self.id != '' and self.name != '':
             if self.desinger:
-                desinger = self.desinger[0]
+                designer = self.remove_accents(self.desinger[0])
             if self.publisher:
-                publisher = self.publisher[0]
+                publisher = self.remove_accents(self.publisher[0])
             if self.mechanics:
                 mechanic = self.mechanics[0]
             if self.category:
                 category = self.category[0]
-            sql = "INSERT INTO board_game VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
-            val = (self.id, self.name, self.yearpublished, self.minplayer, self.maxplayer, self.playingtime, self.averagerating, desinger, category, mechanic, publisher, self.age, self.rank)
-            mycursor.execute(sql, val)
+            sql_insert = "INSERT INTO board_game VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+            val = (self.id, self.name, self.yearpublished, self.minplayer, self.maxplayer, self.playingtime, self.averagerating, designer, category, mechanic, publisher, self.age, self.rank)
+            mycursor.execute(sql_insert, val)
 
 
             print("1 record inserted, ID:", mycursor.lastrowid)
