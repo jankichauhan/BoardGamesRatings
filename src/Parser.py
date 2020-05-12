@@ -4,8 +4,8 @@ import os
 import mysql.connector
 
 config = {
-  'user': 'root',
-  'password': 'Janki149!',
+  'user': '',
+  'password': '',
   'host': '127.0.0.1',
   'database': 'Capstone_project',
   'raise_on_warnings': True
