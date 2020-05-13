@@ -26,7 +26,7 @@ I am using board game geek's api to get information on individual board game.
 [BGG API](https://boardgamegeek.com/wiki/page/BGG_XML_API)
 
 ### Analysis
-Each board game has data following(and more) fields. 
+Each board game has data following(and more) fields that I will be working with.  
   > -`board_game_id` 
   > -`name` 
   > -`yearpublished` 
