@@ -30,6 +30,7 @@ class GetData:
 colnames = ['Rank','Name','Id']
 data = pd.read_csv('../bgglist.csv', names=colnames)
 gameids = data.Id.tolist()
-for id in gameids:
-    GetData.get_data_by_id(str(id))
-    time.sleep(2)
+# for i in range(len(gameids)):
+#      GetData.get_data_by_id(str(id))
+#      time.sleep(1)
+GetData.get_data_by_id(str('161936'))

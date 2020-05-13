@@ -14,18 +14,18 @@ config = {
 }
 
 cnx = mysql.connector.connect(**config)
-
+mycursor = cnx.cursor()
 class Parser():
     def __init__(self):
         print("in init")
         self.id = ''
         self.name = ''
         self.yearpublished = ''
-        self.minplayer = 0
-        self.maxplayer = 0
+        self.minplayers = 0
+        self.maxplayers = 0
         self.playingtime = 0
-        self.averagerating = 0.0
-        self.desinger = list([])
+        self.averagerating = 0
+        self.designer = list([])
         self.publisher = list([])
         self.category = list([])
         self.mechanics = list([])
@@ -39,27 +39,28 @@ class Parser():
 
         for child in root:
             self.id = child.get('objectid')
-            self.yearpublished = child.find('yearpublished').text if child.find('yearpublished') is not None else ''
-            self.minplayers = child.find('minplayers').text if child.find('yearpublished') is not None else ''
-            self.maxplayers = child.find('maxplayers').text if child.find('yearpublished') is not None else ''
-            self.playingtime = child.find('playingtime').text if child.find('yearpublished') is not None else ''
-            self.age = child.find('age').text if child.find('yearpublished') is not None else ''
-            if(child.find('boardgamedesigner') !=  None):
-                self.desinger.append(child.find('boardgamedesigner').text)
-            if (child.find('boardgamecategory') !=  None):
-                self.category.append(child.find('boardgamecategory').text)
-            if (child.find('boardgamepublisher') != None):
-                self.publisher.append(child.find('boardgamepublisher').text)
-            if (child.find('boardgamemechanic') != None):
-                self.mechanics.append(child.find('boardgamemechanic').text)
-            name = child.find('name') if child.find('yearpublished') is not None else ''
-            if name != '' and name.get('primary') == 'true':
-                self.name = name.text
+            self.yearpublished = child.find('yearpublished').text if child.find('yearpublished') is not None else 0
+            self.minplayers = child.find('minplayers').text if child.find('minplayers') is not None else 0
+            self.maxplayers = child.find('maxplayers').text if child.find('maxplayers') is not None else 0
+            self.playingtime = child.find('playingtime').text if child.find('playingtime') is not None else 0
+            self.age = child.find('age').text if child.find('age') is not None else ''
             self.averagerating = child.find('statistics').find('ratings').find('average').text if child.find('statistics') is not None else ''
             ranks = child.find('statistics').find('ratings').find('ranks') if child.find('statistics') is not None else ''
             for rank in ranks:
                 if rank.get('friendlyname') == 'Board Game Rank':
                     self.rank = rank.get('value')
+            for grandChild in child:
+                if grandChild.tag == 'boardgamedesigner':
+                    self.designer.append(grandChild.text)
+                if grandChild.tag == 'boardgamecategory':
+                    self.category.append(grandChild.text)
+                if grandChild.tag == 'boardgamepublisher':
+                    self.publisher.append(grandChild.text)
+                if grandChild.tag == 'boardgamemechanic':
+                    self.mechanics.append(grandChild.text)
+                if grandChild.tag == 'name':
+                    if grandChild.get('primary') == 'true':
+                        self.name = self.remove_accents(grandChild.text)
         self.print_values()
         self.insert_into_table()
 
@@ -67,11 +68,11 @@ class Parser():
         print("id = " + str(self.id))
         print(self.name)
         print(self.yearpublished)
-        print(self.minplayer)
-        print(self.maxplayer)
+        print(self.minplayers)
+        print(self.maxplayers)
         print(self.playingtime)
         print(self.averagerating)
-        print(self.desinger)
+        print(self.designer)
         print(self.publisher)
         print(self.category)
         print(self.mechanics)
@@ -85,12 +86,9 @@ class Parser():
         return only_ascii.decode()
 
     def insert_into_table(self):
-        mycursor = cnx.cursor()
+
 
         # Clear all table content before inserting
-        sql_delete = "delete from board_game where board_game_id > 0"
-        mycursor.execute(sql_delete)
-        cnx.commit()
 
         designer = ''
         publisher = ''
@@ -98,18 +96,26 @@ class Parser():
         category = ''
 
         if self.id != '' and self.name != '':
-            if self.desinger:
-                designer = self.remove_accents(self.desinger[0])
+            if self.designer:
+                designer = ':'.join(self.designer[:3])
+                designer = self.remove_accents(designer)
+                print(designer)
             if self.publisher:
-                publisher = self.remove_accents(self.publisher[0])
+                publisher = ':'.join(self.publisher[:3])
+                publisher = self.remove_accents(publisher)
+                print(publisher)
             if self.mechanics:
-                mechanic = self.mechanics[0]
+                mechanic = ':'.join(self.mechanics[:3])
             if self.category:
-                category = self.category[0]
+                category = ':'.join(self.category[:3])
+                print(category)
+            if self.rank == '' or self.rank == 'Not Ranked':
+                self.rank = 0
             sql_insert = "INSERT INTO board_game VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
-            val = (self.id, self.name, self.yearpublished, self.minplayer, self.maxplayer, self.playingtime, self.averagerating, designer, category, mechanic, publisher, self.age, self.rank)
+            val = (self.id, self.name, self.yearpublished, self.minplayers, self.maxplayers, self.playingtime, self.averagerating, designer, category, mechanic, publisher, self.age, self.rank)
+            print(sql_insert, val)
             mycursor.execute(sql_insert, val)
-
+            cnx.commit()
 
             print("1 record inserted, ID:", mycursor.lastrowid)
         else:
@@ -120,10 +126,12 @@ class Parser():
 
 files = os.listdir('../data/')
 counter = 0
+sql_delete = "delete from board_game where board_game_id > 0"
+mycursor.execute(sql_delete)
+cnx.commit()
 for file in files:
     print(file)
     counter += 1
     Parser().getelements(file)
-    print(counter)
-
-cnx.commit()
+print(counter)
+# Parser().getelements('game161936.xml')
