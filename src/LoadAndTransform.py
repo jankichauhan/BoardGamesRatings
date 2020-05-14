@@ -5,38 +5,35 @@ from src.Modelling import Model
 from collections import Counter
 from itertools import chain
 
+# Load and transform data for modelling.
+
 class LoadAndTransform():
     def __init__(self):
         print("in init")
-        self.df_data = pd.read_csv('board_game_data.csv')
-        self.df_data.columns = ['board_game_id', 'name', 'year', 'minplayer', 'maxplayer', 'playingtime', 'avgratings',
+        self.board_game_data = pd.read_csv('board_game_data.csv')
+        self.board_game_data.columns = ['board_game_id', 'name', 'year', 'minplayer', 'maxplayer', 'playingtime', 'avgratings',
                                 'designer', 'category', 'mechanic', 'publisher', 'age', 'rank']
-        self.board_game_data = self.df_data
-
         self.unique_publishers = []
         self.unique_categories = []
         self.unique_designers = []
 
-    def tranform(self):
-        self.df_data = pd.read_csv('board_game_data.csv')
-        self.df_data.columns = ['board_game_id', 'name', 'year', 'minplayer', 'maxplayer', 'playingtime', 'avgratings',
-                                'designer', 'category', 'mechanic', 'publisher', 'age', 'rank']
-        self.board_game_data = self.df_data
+        self.transform()
+        self.data_for_modelling()
+
+    def transform(self):
+
         self.board_game_data = self.board_game_data.fillna("not define")
         self.board_game_data['designer'] = self.board_game_data['designer'].str.replace(':', ', ')
         self.board_game_data['category'] = self.board_game_data['category'].str.replace(':', ', ')
         self.board_game_data['mechanic'] = self.board_game_data['mechanic'].str.replace(':', ', ')
         self.board_game_data['publisher'] = self.board_game_data['publisher'].str.replace(':', ', ')
-
         self.get_categorical_list()
         self.one_hot_encoding()
-        self.data_for_modelling()
-
 
     def data_for_modelling(self):
         columns = self.board_game_data.columns.tolist()
         columns = [c for c in columns if
-                   c not in ['board_game_id','avgratings', 'name', 'year', 'rank', 'designer', 'category', 'mechanic', 'publisher', 'cat_not define','pub_not define','des_not define', 'cat_(Uncredited)']]
+                   c not in ['board_game_id', 'avgratings', 'name', 'year', 'rank', 'designer', 'category', 'mechanic', 'publisher', 'cat_not define','pub_not define','des_not define', 'cat_(Uncredited)']]
         target = 'avgratings'
 
         X = self.board_game_data[columns].values
@@ -45,6 +42,7 @@ class LoadAndTransform():
         print(columns)
         print(self.board_game_data.shape)
 
+        # correlation for each column with target
         # for col in columns:
         #     plt.scatter(self.board_game_data[col], self.board_game_data[target], alpha=0.4)
         #     plt.xlabel(col)
@@ -54,9 +52,9 @@ class LoadAndTransform():
         ml_model = Model(X,y)
         # ml_model.LinearReg()
         ml_model.RandomForest(columns)
-        # ml_model.GradientBoost()
-        # ml_model.grid_search_cv_gb()
-        # ml_model.grid_search_cv_rf()
+        ml_model.GradientBoost(columns)
+        ml_model.grid_search_cv('rf', columns)
+        ml_model.grid_search_cv('gb', columns)
 
     def get_categorical_list(self):
         board_game_data_copy = self.board_game_data.copy()
@@ -98,6 +96,7 @@ class LoadAndTransform():
         unique_designers = set(chain(*unique_designers))
         return unique_designers
 
+    # converting categorical data to dummies
     def one_hot_encoding(self):
         for category in self.unique_categories:
             self.board_game_data["cat_"+category] = self.board_game_data.category.apply(lambda x: 1 if category in x else 0)
@@ -109,5 +108,4 @@ class LoadAndTransform():
 
 
 
-LoadAndTransform().tranform()
-# LoadAndTransform().data_for_modelling()
+LoadAndTransform()

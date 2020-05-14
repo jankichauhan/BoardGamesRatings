@@ -9,13 +9,13 @@ config = {
   'user': '',
   'password': '',
   'host': '127.0.0.1',
-  'database': 'Capstone_project',
+  'database': '',
   'raise_on_warnings': True
 }
 
 cnx = mysql.connector.connect(**config)
 mycursor = cnx.cursor()
-class Parser():
+class Parser:
     def __init__(self):
         print("in init")
         self.id = ''
@@ -126,9 +126,9 @@ class Parser():
 
 files = os.listdir('../data/')
 counter = 0
-sql_delete = "delete from board_game where board_game_id > 0"
-mycursor.execute(sql_delete)
-cnx.commit()
+# sql_delete = "delete from board_game where board_game_id > 0"
+# mycursor.execute(sql_delete)
+# cnx.commit()
 for file in files:
     print(file)
     counter += 1
