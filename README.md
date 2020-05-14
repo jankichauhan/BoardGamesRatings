@@ -17,10 +17,12 @@
 * [Future Analysis](#future-analysis)
 
 ## Motivation
-The other day one of my classmate asked me 'which is my favorite board game? Do I have any recommendations?'. I immediately thought of Viticulture(you make wine and get points when you ship them). Overall I am really like playing games published by Stonemaier games. Jamey Stegmaier and Uwe Rosenberg are my top game designers. To answer the recommendation question, I always go with gateway games i.e. ones with straight forward rules, shorter playtime(so you can play again) and good components. Also, for me game designers and game publishers put good weight when trying new games. It will be interesting to see if these factors i.e playtime, complexity, game designer and game publisher contribute to the ratings of the game. Are there other factors which influence the ratings of game. 
+I got introduced to board games in Dec 2010, no one had plans for the holidays and we all had enough of movie watching. We played Ticket to Ride and then Settler of Catan a few days later; it was so much fun, I loved it. Since then it has been board games over movies(for me!)
+When you have been board games for 10 years, you start developing your favorites. I am biased towards Euro games(specially worker placement games), any game by Jamey Stegmaier or Uwe Rosenberg I am willing to give a try. On the other hand card games are not in my top 10. Dominion is one of the best gateway games but it didn't appeal to me. The other criteria I heard a lot in the board game community is the playtime, some prefer longer and many prefer shorter playtime(so one can play again).
+I believe these criterias play a significant part in rating a board game. My job here is to find such criterias i.e playtime, category, game designer and game publisher and weigh their significance. Are there other factors which influence the ratings of a game?
 
 ## Data Exploration
-I am using board game geek's api to get information on individual board game.
+I am using board game geek's api to get information on individual board game, extract the fields using an xml parser and save it a sql table. 
 ### Data Pipeline
 
 ![](images/DataPipeline.png)
