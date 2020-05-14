@@ -1,4 +1,4 @@
-# Board Games Ratings
+# Bad, Medicore, Good or Outstanding?
 **Identifying the features that contributes to the ratings of a board games and using those feature training ML model.**
 <br>Janki Chauhan
 <br>
@@ -61,6 +61,12 @@ Each board game has data following(and more) fields that I will be working with.
  
  ## Conclusion
  
- ## Future Analysis
-
+ ![](images/RF_Features.png)
  
+ ## Future Analysis
+There is an increase in higher ratings over the years. Is it because the production quality has gotten better?
+
+Using the same feature set can we predict if the game will be popular? 
+
+How does kickstarter factors in game ratings, it definitely creates awareness before the game goes to production.
+
