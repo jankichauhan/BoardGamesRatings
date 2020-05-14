@@ -8,7 +8,7 @@
 
 * [Motivation](#motivation)
 * [Data Exploration](#data-exploration)
-  * [Pipeline](#pipeline-source)
+  * [Data Pipeline](#pipeline-source)
   * [Analysis](#analysis)
 * [Modeling](#modeling)
   * [Base Model](#basemodel)
@@ -21,7 +21,9 @@ The other day one of my classmate asked me 'which is my favorite board game? Do 
 
 ## Data Exploration
 I am using board game geek's api to get information on individual board game.
-### Pipeline
+### Data Pipeline
+
+![](images/DataPipeline.png)
 
 [BGG API](https://boardgamegeek.com/wiki/page/BGG_XML_API)
 
