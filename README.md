@@ -1,5 +1,5 @@
 # Bad, Medicore, Good or Outstanding?
-**Identifying feature and predicting board game ratings.**
+**Identifying features and predicting board game ratings.**
 <br>Janki Chauhan
 <br>
 [Linkedin](https://www.linkedin.com/in/jankichauhan/) | [Github](https://github.com/jankichauhan) | [Board Game Geek](https://boardgamegeek.com/user/jankichauhan)
