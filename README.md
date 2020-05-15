@@ -58,14 +58,36 @@ Each board game has data following(and more) fields that I will be working with.
  ![](images/TopDesingers.png)
  
  ## Modelling
- 
+ Predicting the ratings of board game given features like playing time, min and max number of players, minumun age,   publisher, designer and category of the game. 
  ### Base Model
+ > - Linear Regression
+ >> - Default parameters
+ >> - MSE: 1.24
+ >> - R2: 0.28
+ > - Random Forest
+ >> - max_features=10, n_estimators=1000
+ >> - MSE: 3.03
+ >> - R2: 0.39
+ > - Gradient Boost
+ >> - learning_rate=0.2, max_features=10,n_estimators=1000
+ >> - MSE: 3.43
+ >> - R2: 0.40
  
- ### Tunning
- 
+ ### Tuning
+ Tuning random forst and gradient boost using grid search cv, here are the parameters:
+ > - Random Forest
+ >> - bootstrap=True, criterion='mse', max_features=20, n_estimators=2000
+ >> - MSE: 3.23
+ >> - R2: 0.38
+ > - Gradient Boost
+ >> -learning_rate=0.05, max_features=20, n_estimators=1000
+ >> - MSE: 3.43
+ >> - R2: 0.42
+ Gradient boost performed slightly better than Random forest. 
+
  ## Conclusion
  
- ![](images/RF_Features.png)
+ ![](images/GB_Features.png) ![](images/GB_Features_Combined.png)
  
  ## Future Analysis
 There is an increase in higher ratings over the years. Is it because the production quality has gotten better?
