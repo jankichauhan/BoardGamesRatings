@@ -80,14 +80,18 @@ Each board game has data following(and more) fields that I will be working with.
  >> - MSE: 3.23
  >> - R2: 0.38
  > - Gradient Boost
- >> -learning_rate=0.05, max_features=20, n_estimators=1000
+ >> - learning_rate=0.05, max_features=20, n_estimators=1000
  >> - MSE: 3.43
  >> - R2: 0.42
  Gradient boost performed slightly better than Random forest. 
 
  ## Conclusion
+ Based on the below feature score, play time and age along with max number of player and game category influence the most in rating a board game.
+ ![](images/GB_Features.png) 
  
- ![](images/GB_Features.png) ![](images/GB_Features_Combined.png)
+ Combining the publishers, categories and designers to get better visual understanding.
+ 
+ ![](images/GB_Features_Combined.png)
  
  ## Future Analysis
 There is an increase in higher ratings over the years. Is it because the production quality has gotten better?
