@@ -27,7 +27,7 @@ I am using board game geek's api to get information on individual board game, ex
 
 ![](images/DataPipeline.png)
 
-[BGG API](https://boardgamegeek.com/wiki/page/BGG_XML_API)
+Data Source: [BGG API](https://boardgamegeek.com/wiki/page/BGG_XML_API)
 
 ### Analysis
 Each board game has data following(and more) fields that I will be working with.  
@@ -62,27 +62,27 @@ Each board game has data following(and more) fields that I will be working with.
  ### Base Model
  > - Linear Regression
  >> - Default parameters
- >> - MSE: 1.24
- >> - R2: 0.28
+ >> - MSE: 4.24
+ >> - R2: 0.38
  > - Random Forest
  >> - max_features=10, n_estimators=1000
  >> - MSE: 3.03
- >> - R2: 0.39
+ >> - R2: 0.28
  > - Gradient Boost
  >> - learning_rate=0.2, max_features=10,n_estimators=1000
- >> - MSE: 3.43
- >> - R2: 0.40
+ >> - MSE: 3.01
+ >> - R2: 0.27
  
  ### Tuning
  Tuning random forst and gradient boost using grid search cv, here are the parameters:
  > - Random Forest
  >> - bootstrap=True, criterion='mse', max_features=20, n_estimators=2000
- >> - MSE: 3.23
- >> - R2: 0.38
+ >> - MSE: 2.92
+ >> - R2: 0.22
  > - Gradient Boost
  >> - learning_rate=0.05, max_features=20, n_estimators=1000
- >> - MSE: 3.43
- >> - R2: 0.42
+ >> - MSE: 2.83
+ >> - R2: 0.21
  Gradient boost performed slightly better than Random forest. 
 
  ## Conclusion
@@ -96,7 +96,4 @@ Each board game has data following(and more) fields that I will be working with.
  ## Future Analysis
 There is an increase in higher ratings over the years. Is it because the production quality has gotten better?
 
-Using the same feature set can we predict if the game will be popular? 
-
 How does kickstarter factors in game ratings, it definitely creates awareness before the game goes to production.
-
